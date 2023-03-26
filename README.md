@@ -22,3 +22,22 @@ This BE is used for Both FE and Dashboard.
   - User registration, Login, logout, update and role based permissions and token based authentication
   - Product List and Details. 
   - Order Process 
+
+## Run on docker
+```commandline
+docker-compose -f local.yml build
+docker-compose -f local.yml up
+docker-compose -f local.yml down
+```
+### Necessary Management Commands
+  ```shell
+  # Create new app
+  docker-compose run eshop_django_1 sh -c "python manage.py startapp <App_Name>"
+  # Migration commands
+  docker exec -it eshop_django_1 sh -c "python manage.py makemigrations"
+  docker exec -it eshop_django_1 sh -c "python manage.py migrate"
+  # Create super user
+  docker exec -it eshop_django_1 sh -c "python manage.py createsuperuser"
+  # Run shell
+  docker exec -it eshop_django_1 sh -c "python manage.py shell_plus"
+  ```

@@ -1,0 +1,55 @@
+version: '3'
+
+volumes:
+  eshop_postgres_data: { }
+  eshop_postgres_data_backups: { }
+  eshop_elasticsearch_data: { }
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - elastic_search
+    links:
+      - postgres
+      - redis
+      - elastic_search
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    ports:
+      - "8000:8000"
+    command: /start
+    stdin_open: true
+    tty: true
+
+  postgres:
+    image: postgres:15.2
+    volumes:
+      - eshop_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.envs/.local/.postgres
+
+  redis:
+    image: redis:7.0.10-alpine
+
+  elastic_search:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.6.2
+    environment:
+      - node.name=eshop_elastic_search
+      - cluster.name=eshop_es-docker-cluster
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - eshop_elasticsearch_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"

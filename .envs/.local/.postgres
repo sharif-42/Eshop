@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_DB=eshop
+POSTGRES_USER=eshop
+POSTGRES_PASSWORD=eshop@pass
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
