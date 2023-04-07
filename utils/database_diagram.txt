@@ -1,0 +1,48 @@
+URL: https://dbdiagram.io/d/641ffa075758ac5f17242917
+
+Table User {
+  id int [primary key]
+  email varcher
+  password varcher
+  is_superuser boolean
+  is_active boolean
+  is_dashboard_user boolean
+}
+Table UserLoginLog{
+  email varcher
+  user_id object [ref: > User.id]
+  is_successful boolean
+  ip_address varcher
+  browser varcher
+  time_attemted timestamp
+}
+Table Product{
+  id int [primary key]
+  code varcher
+  is_available boolean
+  in_stock int
+}
+Table Order{
+  id int [primary key]
+  user_id object [ref: > User.id]
+  total_price Decimal
+}
+Table OrderItem{
+  id int [primary key]
+  order_id int [ref: > Order.id]
+  product_code varcher [ref: - Product.code]
+  total_price Decimal
+  unit_price Decimal
+}
+Table ProductPrice{
+  id int [primary key]
+  product_code varcher [ref: > Product.code]
+  price_type price_type
+  price_value Decimal
+  valid_from timestamp
+  valid_to timestamp
+}
+Enum price_type{
+  sales_price
+  purchase_price
+}
