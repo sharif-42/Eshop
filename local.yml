@@ -45,11 +45,14 @@ services:
       - cluster.name=eshop_es-docker-cluster
       - discovery.type=single-node
       - bootstrap.memory_lock=true
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
     volumes:
       - eshop_elasticsearch_data:/usr/share/elasticsearch/data
     ports:
       - "9200:9200"
+    deploy:
+      resources:
+        limits:
+          memory: 5000M
+        reservations:
+          cpus: '0.25'
+          memory: 500M
