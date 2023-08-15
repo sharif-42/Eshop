@@ -52,6 +52,7 @@ THIRD_PARTY_APPS = [
     'rest_framework_simplejwt'  # https://django-rest-framework-simplejwt.readthedocs.io/
 ]
 LOCAL_APPS = [
+    'common',
     'orders',
     'products',
     'users',
