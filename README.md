@@ -32,7 +32,7 @@ docker-compose -f local.yml down
 ### Necessary Management Commands
   ```shell
   # Create new app
-  docker-compose run eshop_django_1 sh -c "python manage.py startapp <App_Name>"
+  docker-compose -f local.yml run django sh -c "python manage.py startapp <App_Name>"
   # Migration commands
   docker exec -it eshop_django_1 sh -c "python manage.py makemigrations"
   docker exec -it eshop_django_1 sh -c "python manage.py migrate"
