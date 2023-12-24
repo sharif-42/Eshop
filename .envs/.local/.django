@@ -2,3 +2,5 @@
 DJANGO_SECRET_KEY=#qoes#^@@4iey*4ed#y(0vl03a886j2+kuqv*@sx8!_+drw=^_
 DEBUG=True
 DJANGO_ALLOWED_HOSTS=0.0.0.0,127.0.0.1,localhost
+ELASTIC_USERNAME=elastic
+ELASTIC_PASSWORD=sharif12

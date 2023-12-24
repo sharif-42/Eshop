@@ -1,14 +1,16 @@
 asgiref==3.6.0
-Django==4.1.7
-django-filter==22.1
-djangorestframework==3.14.0
-djangorestframework-simplejwt==5.2.2
 Markdown==3.4.3
 Pillow==9.4.0
 psycopg2-binary==2.9.5
 PyJWT==2.6.0
 pytz==2022.7.1
 sqlparse==0.4.3
+
+# Django
+Django==4.1.7
+djangorestframework==3.14.0
+django-filter==22.1
+djangorestframework-simplejwt==5.2.2
 django-environ==0.9.0
 
 # Shell
@@ -20,7 +22,7 @@ django-redis==5.2.0                         # https://pypi.org/project/django-re
 redis==4.5.3                                # https://pypi.org/project/redis/
 
 # Elastic Search
-django-elasticsearch-dsl==7.3               # https://pypi.org/project/django-elasticsearch-dsl/
+django-elasticsearch-dsl==8.0               # https://pypi.org/project/django-elasticsearch-dsl/
 # elasticsearch==7.13.4
 # elasticsearch-dsl==7.4.0
 
