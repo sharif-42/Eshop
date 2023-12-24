@@ -2,10 +2,10 @@
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/sharif-42/Style-Icon/graphs/commit-activity)
 [![Maintainer](https://img.shields.io/badge/maintainer-Sharif_42-blue.svg)](https://github.com/sharif-42)
+
 [![Generic badge](https://img.shields.io/badge/MadeWith-Python3.10-green.svg)](https://www.python.org/)
 [![Generic badge](https://img.shields.io/badge/FrameWork-Django4-%230db7ed.svg)](https://docs.djangoproject.com/en/3.2/)
 [![Generic badge](https://img.shields.io/badge/FrameWork-DjangoRestFrameWork-red.svg)](https://www.django-rest-framework.org/)
-
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![ElasticSearch](https://img.shields.io/badge/-ElasticSearch-005571?style=for-the-badge&logo=elasticsearch)
 
@@ -19,7 +19,7 @@ This BE is used for Both FE and Dashboard.
     - Order List and Details
     - Lightweight Statistics.
 - ### FE Features
-  - User registration, Login, logout, update and role based permissions and token based authentication
+  - User registration, Login, logout, update and role-based permissions and token based authentication
   - Product List and Details. 
   - Order Process 
 
@@ -40,4 +40,9 @@ docker-compose -f local.yml down
   docker exec -it eshop_django_1 sh -c "python manage.py createsuperuser"
   # Run shell
   docker exec -it eshop_django_1 sh -c "python manage.py shell_plus"
+  ```
+### Elastic Commands
+  ```shell
+  docker exec -it eshop_django_1 sh -c "python manage.py search_index --rebuild -f"  # Index everything.
+  docker exec -it eshop_django_1 sh -c "python manage.py search_index --delete -f"   # Delete all index.
   ```
