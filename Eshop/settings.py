@@ -49,13 +49,15 @@ THIRD_PARTY_APPS = [
     'rest_framework',           # https://www.django-rest-framework.org/
     'django_filters',           # https://django-filter.readthedocs.io/en/stable/
     'django_extensions',        # https://github.com/django-extensions/django-extensions
-    'rest_framework_simplejwt'  # https://django-rest-framework-simplejwt.readthedocs.io/
+    'rest_framework_simplejwt',  # https://django-rest-framework-simplejwt.readthedocs.io/
+    'django_elasticsearch_dsl',  # https://django-elasticsearch-dsl.readthedocs.io/en/latest/
 ]
 LOCAL_APPS = [
     'common',
     'orders',
     'products',
     'users',
+    'search',
 ]
 INSTALLED_APPS = BASE_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -177,9 +179,12 @@ REST_FRAMEWORK = {
 }
 
 # ElasticSearch
+ELASTIC_USERNAME = env("ELASTIC_USERNAME")
+ELASTIC_PASSWORD = env("ELASTIC_PASSWORD")
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': 'http://elastic_search:9200/'
+        'hosts': 'http://elastic_search:9200/',
+        'http_auth': (ELASTIC_USERNAME, ELASTIC_PASSWORD)
     },
 }
 
