@@ -43,6 +43,7 @@ docker-compose -f local.yml down
   ```
 ### Elastic Commands
   ```shell
-  docker exec -it eshop_django_1 sh -c "python manage.py search_index --rebuild -f"  # Index everything.
-  docker exec -it eshop_django_1 sh -c "python manage.py search_index --delete -f"   # Delete all index.
+  docker exec -it eshop_django_1 sh -c "python manage.py search_index --rebuild -f"              # reindex
+  docker exec -it eshop_django_1 sh -c "python manage.py search_index --delete -f"               # delete index
+  docker exec -it eshop_django_1 sh -c "python manage.py search_index --populate -f"             # populate data 
   ```

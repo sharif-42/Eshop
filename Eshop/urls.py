@@ -21,12 +21,15 @@ api_patterns = (
     [
         path("users/", include('users.rest_apis.urls')),
         # path("search/", include('search.rest_apis.urls')),
-        # path("products/", include('product.rest_apis.urls')),
+        path("products/", include('products.rest_apis.urls')),
     ], "api"
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/v1/", include(api_patterns, namespace=settings.API_VERSION_NAMESPACE)),
+]
 
+urlpatterns += [
+    path('silk/', include('silk.urls', namespace='silk'))
 ]

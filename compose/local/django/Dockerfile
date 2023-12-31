@@ -6,8 +6,8 @@ WORKDIR /app
 
 # install dependencies
 RUN pip install --upgrade pip
-COPY requirements.txt /app/
-RUN pip install -r requirements.txt
+COPY ./requirements /requirements
+RUN pip install -r /requirements/local.txt
 
 # copy entrypoint.sh
 COPY ./compose/local/django/entrypoint.sh /entrypoint
