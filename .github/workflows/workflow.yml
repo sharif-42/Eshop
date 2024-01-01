@@ -15,10 +15,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+      # this Action should follow steps to set up Python build environment
+      - name: Install Python dependencies
+        uses: py-actions/py-dependency-install@v4
+        with:
+          update-pip: "true"
+          update-setuptools: "false"
+          update-wheel: "false"
+          path: "requirements/local.txt"
 
 #      - name: Lint with flake8
 #        run: |
