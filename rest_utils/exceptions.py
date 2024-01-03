@@ -8,7 +8,6 @@ from rest_framework.exceptions import (
     NotFound,
     ValidationError,
 )
-from six import string_types
 
 
 # TODO: We will refactor it later
@@ -16,26 +15,26 @@ class BaseException(Exception):
     """
     Internal exception base class that can be handled by the exception handler.
     """
-    code = None
-    error_details = None
-    message = None
+    default_code = None
+    default_detail = None
+    errors = []
     context = None
     status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
     def __init__(self, message="", context=None, code=None, error_details=None, *args, **kwargs):
-        self.code = code or self.code
-        self.error_details = error_details or self.error_details
-        self.message = message or self.message or ""
+        self.default_code = code or self.default_code
+        self.default_detail = message or self.default_detail or ""
+        self.errors = error_details or self.errors
         self.context = context or {}
 
         if kwargs:
             self.context.update(kwargs)
 
-        if self.context and self.message:
-            self.message = self.message.format(**self.context)
+        if self.context and self.default_detail:
+            self.message = self.default_detail.format(**self.context)
 
     def __str__(self):
-        return str(self.message)
+        return str(self.default_detail)
 
 
 class BadRequestException(BaseException):
@@ -45,7 +44,7 @@ class BadRequestException(BaseException):
 
 class NotFoundException(BaseException):
     status_code = status.HTTP_404_NOT_FOUND
-    code = "NOT_FOUND"
+    default_code = "NOT_FOUND"
 
 
 class InvalidInputException(BadRequestException):
@@ -55,51 +54,32 @@ class InvalidInputException(BadRequestException):
 def custom_exception_handler(exc, context=None):
     """
     Returns the response that should be used for any given exception.
-
-    By default we handle the REST framework `APIException` and Django's builtin
-    `Http404` exceptions.
-
-    Any unhandled exceptions are catched and logged by this handler and
-    an `OperationException` is raised accordingly the view or process behind
-    that triggered the actual error.
+    Example:
+    {
+        "message": "You do not have permission to perform this action.",
+        "error_code": "PERMISSION_DENIED",
+        "errors": []
+    }
+    Any unhandled exceptions are caught and logged by this handler and
+    an `OperationException` is raised accordingly the view or process behind that triggered the actual error.
     """
+    # Always working with an APIException/Custom Created exception
+    if not isinstance(exc, (APIException, BaseException)):
+        raise exc
 
     if isinstance(exc, Http404):
         exc = NotFound()
     elif isinstance(exc, ValidationError):
         exc = InvalidInputException(errors=exc.detail)
 
-    # Make sure were always working with an APIException or ArmorException
-    if not isinstance(exc, (APIException, BaseException)):
-        raise exc
-
-    identifier = getattr(exc, "identifier", None)
-    code = getattr(exc, "code", "")
-    message = getattr(exc, "message", "")
-    error_code = getattr(exc, "error_code", "")
+    error_code = getattr(exc, "default_code", "OPERATION_FAILED").upper()       # default is OPERATION_FAILED
+    message = getattr(exc, "default_detail", "Operation Failed")                # default is "Operation Failed"
     errors = getattr(exc, "errors", [])
 
-    if not code and isinstance(exc, APIException):
-        # DRF 3.5 exceptions have a proper code we can expose
-        if hasattr(exc, "get_codes"):
-            codes = exc.get_codes()
-            if isinstance(codes, string_types):
-                code = codes
-            else:
-                code = next(iter(codes))
-
-        # Fallback to the default OPERATION_FAILED message
-        # if also no default_code was provided
-        code = code or getattr(exc, "default_code", "OPERATION_FAILED")
-        code = code.upper()
-
     if isinstance(exc, MethodNotAllowed):
-        code = "NOT_ALLOWED"
+        error_code = "NOT_ALLOWED"
     elif isinstance(exc, NotFound):
-        code = "NOT_FOUND"
+        error_code = "NOT_FOUND"
 
-    data = dict(
-        message=message, errors=errors, key=identifier, code=code, error_code=error_code
-    )
-
+    data = dict(message=message, error_code=error_code, errors=errors)
     return Response(data, status=exc.status_code)
