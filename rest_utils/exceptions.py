@@ -1,5 +1,4 @@
 from django.http import Http404
-from django.utils.translation import gettext_lazy as _
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import (
@@ -10,7 +9,6 @@ from rest_framework.exceptions import (
 )
 
 
-# TODO: We will refactor it later
 class BaseException(Exception):
     """
     Internal exception base class that can be handled by the exception handler.
@@ -21,10 +19,10 @@ class BaseException(Exception):
     context = None
     status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
-    def __init__(self, message="", context=None, code=None, error_details=None, *args, **kwargs):
-        self.default_code = code or self.default_code
+    def __init__(self, message="", context=None, default_code=None, errors=None, *args, **kwargs):
+        self.default_code = default_code or self.default_code
         self.default_detail = message or self.default_detail or ""
-        self.errors = error_details or self.errors
+        self.errors = errors or self.errors
         self.context = context or {}
 
         if kwargs:
@@ -39,7 +37,7 @@ class BaseException(Exception):
 
 class BadRequestException(BaseException):
     status_code = status.HTTP_400_BAD_REQUEST
-    code = "BAD_REQUEST"
+    default_code = "BAD_REQUEST"
 
 
 class NotFoundException(BaseException):
@@ -48,7 +46,7 @@ class NotFoundException(BaseException):
 
 
 class InvalidInputException(BadRequestException):
-    code = "INVALID_INPUT"
+    default_code = "INVALID_INPUT"
 
 
 def custom_exception_handler(exc, context=None):
@@ -56,9 +54,12 @@ def custom_exception_handler(exc, context=None):
     Returns the response that should be used for any given exception.
     Example:
     {
-        "message": "You do not have permission to perform this action.",
-        "error_code": "PERMISSION_DENIED",
-        "errors": []
+        "message": "Object Not Found!",
+        "error_code": "BAD_REQUEST",
+        "errors": [
+            "error1",
+            "error2"
+        ]
     }
     Any unhandled exceptions are caught and logged by this handler and
     an `OperationException` is raised accordingly the view or process behind that triggered the actual error.
