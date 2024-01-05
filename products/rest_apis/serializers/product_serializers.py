@@ -13,3 +13,19 @@ class ProductListSerializer(serializers.ModelSerializer):
             'short_description',
             'pre_order',
         ]
+
+
+class ProductDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = [
+            'code',
+            'name',
+            'is_active',
+            'short_description',
+            'long_description',
+            'valid_from',
+            'valid_until',
+            'pre_order',
+        ]
+
