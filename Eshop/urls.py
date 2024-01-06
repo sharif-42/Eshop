@@ -20,8 +20,8 @@ from django.urls import path, include
 api_patterns = (
     [
         path("users/", include('users.rest_apis.urls')),
-        # path("search/", include('search.rest_apis.urls')),
         path("products/", include('products.rest_apis.urls')),
+        path("search/", include('search.rest_apis.urls')),
     ], "api"
 )
 

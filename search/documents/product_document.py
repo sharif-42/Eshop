@@ -22,4 +22,6 @@ class ProductDocument(Document):
             "short_description",
             "long_description",
             "pre_order",
+            "valid_from",
+            "valid_until",
         ]
