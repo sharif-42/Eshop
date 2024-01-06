@@ -1,1 +1,1 @@
-from .product import ProductDocument
+from .product_document import ProductDocument
